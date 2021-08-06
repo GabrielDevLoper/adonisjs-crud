@@ -46,8 +46,8 @@ export default class UsersController {
     const cpf = request.input("cpf");
     const password = request.input("password");
 
-    const authenticate = await auth.use("api").attempt(cpf, password);
+    const token = await auth.use("api").attempt(cpf, password);
 
-    console.log(authenticate);
+    return token;
   }
 }
