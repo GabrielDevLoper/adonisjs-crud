@@ -53,8 +53,8 @@ export default class AuthMiddleware {
      * Unable to authenticate using any guard
      */
     throw new AuthenticationException(
-      "Unauthorized access",
-      "E_UNAUTHORIZED_ACCESS",
+      "Sem permissão para acessar",
+      "Você não tem permissão",
       guardLastAttempted,
       this.redirectTo
     );
