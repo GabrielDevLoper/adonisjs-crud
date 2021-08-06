@@ -25,3 +25,5 @@ Route.get("/", async () => {
 });
 
 Route.resource("/usuarios", "UsersController").apiOnly();
+
+Route.post("/login", "UsersController.login");

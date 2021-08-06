@@ -9,7 +9,7 @@ export default class UsersController {
   }
 
   public async store({ request }: HttpContextContract) {
-    const data = request.only(["nome", "cpf"]);
+    const data = request.only(["nome", "cpf", "password"]);
 
     const usuario = await Usuario.create(data);
 
@@ -40,5 +40,14 @@ export default class UsersController {
     const usuario = await Usuario.findOrFail(id);
 
     await usuario.delete();
+  }
+
+  public async login({ auth, request }: HttpContextContract) {
+    const cpf = request.input("cpf");
+    const password = request.input("password");
+
+    const authenticate = await auth.use("api").attempt(cpf, password);
+
+    console.log(authenticate);
   }
 }
