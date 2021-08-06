@@ -1,5 +1,6 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Usuario from "App/Models/Usuario";
+import CreateUserValidator from "App/Validators/CreateUserValidator";
 
 export default class UsersController {
   public async index({}: HttpContextContract) {
@@ -8,12 +9,22 @@ export default class UsersController {
     return usuarios;
   }
 
-  public async store({ request }: HttpContextContract) {
-    const data = request.only(["nome", "cpf", "password"]);
+  public async store({ request, response }: HttpContextContract) {
+    const { nome, cpf, password } = request.body();
 
-    const usuario = await Usuario.create(data);
+    try {
+      await request.validate(CreateUserValidator);
 
-    return usuario;
+      const usuario = await Usuario.create({
+        nome,
+        cpf,
+        password,
+      });
+
+      return usuario;
+    } catch (error) {
+      return response.badRequest(error.messages);
+    }
   }
 
   public async show({ params }: HttpContextContract) {
